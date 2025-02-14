@@ -11,6 +11,16 @@ These base functions are:
 * Branch Restriction - Add restriction to a branch. You can limit push to master, block deletion, etc.
 
 ### First step
+With python venv installed in your machine, run the following commands:
+unix:
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+windows:
+    py -m venv .venv
+    .venv\Scripts\activate
+    pip install -r requirements.txt
+
 Create a consumer using the Atlassian Bitbucket Cloud documentation:
 https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud/
 Add the Key and Secret to a .env file or export them in the terminal:
@@ -47,7 +57,7 @@ Functions usage:
 * This API is only accessible with the following authentication types: apppassword, session, api_token
 
 **Delete User to the Repository**:
-* python3 cli.py addUser workspace "repository-name" "User UID"
+* python3 cli.py deleteUser workspace "repository-name" "User UID"
 * This API is only accessible with the following authentication types: apppassword, session, api_token
 
 **Branch Restriction**:
@@ -60,7 +70,7 @@ There are two ways to match a branch. It is configured in **branch_match_kind**:
 `push`, `force`, `delete`, `restrict_merges`, `require_tasks_to_be_completed`, `require_approvals_to_merge`, `require_default_reviewer_approvals_to_merge`, `require_no_changes_requested`, `require_passing_builds_to_merge`, `require_commits_behind`, `reset_pullrequest_approvals_on_change`, `smart_reset_pullrequest_approvals`, `reset_pullrequest_changes_requested_on_change`, `require_all_dependencies_merged`, `enforce_merge_checks`, and `allow_auto_merge_when_builds_pass`.
 
 Glob:
-* python3 cli.py branchRestriction workspace "repository-name" branch_match_kind kind master. Eg:
+* python3 cli.py branchRestriction workspace "repository-name" branch_match_kind kind branch_name. Eg:
 * python3 cli.py branchRestriction nelsonhaerchen "application-name" glob push master
 
 Branching model:

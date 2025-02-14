@@ -1,17 +1,25 @@
 import sys, os
 from cloud.bitbucket import bitbucketCli
 
+# Try to load the .env file. If doesn't exists, use the environment variable
+from dotenv import load_dotenv
+
+load_dotenv()
+
 key = os.getenv("KEY")
 secret = os.getenv("SECRET")
 cli = bitbucketCli(key=key, secret=secret)
 
 def main():
-    if len(sys.argv) < 2:  # Need at least the script name and the function name
+    # Need at least the script name and the function name
+    if len(sys.argv) < 2:
         print_usage()
-        return 1  # Indicate an error
+        # Indicate an error
+        return 1  
 
     function_name = sys.argv[1]
-    arguments = sys.argv[2:]  # Arguments after the function name
+     # Arguments after the function name
+    arguments = sys.argv[2:] 
 
     if function_name == "createProject":
         if len(arguments) != 5:
@@ -33,7 +41,7 @@ def main():
         addUser = cli.addUser(arguments[0], arguments[1], arguments[2], arguments[3])
         print (addUser)
     elif function_name == "deleteUser":
-        if len(arguments) != 5:
+        if len(arguments) != 4:
             print_usage("deleteUser")
             return 1
         delete = cli.deleteUser(arguments[0], arguments[1], arguments[2], arguments[3])
@@ -50,15 +58,25 @@ def main():
 
 def print_usage(func_name=None):
     print("Usage:")
-    print(f"  python {sys.argv[0]} function1 arg1 arg2")
-    print(f"  python {sys.argv[0]} function2 arg3 arg4")
+    print(f"  python {sys.argv[0]} createProject workspace project-name description project-key is-private(true or false)")
+    print(f"  python {sys.argv[0]} createRepo workspace project-key repository-name is-private(true or false)")
+    print(f"  python {sys.argv[0]} addUser workspace repository-name User UID permission")
+    print(f"  python {sys.argv[0]} deleteUser workspace repository-name User UID")
+    print(f"  python {sys.argv[0]} cli.py branchRestriction workspace repository-name branch_match_kind kind type")
+    
     if func_name:
-        if func_name == "branchRestriction":
+        if func_name == "createProject":
+          print("  createProject: Takes five arguments.")
+        elif func_name == "createRepo":
+          print("  createRepo: Takes four arguments.")
+        elif func_name == "addUser":
+          print("  addUser: Takes four arguments.")
+        elif func_name == "deleteUser":
+          print("  deleteUser: Takes four arguments.")
+        elif func_name == "branchRestriction":
           print("  branchRestriction: Takes five arguments.")
-        elif func_name == "function2":
-          print("  function2: Takes two arguments.")
     else:
-        print("  Available functions: function1, function2")
+        print("Function not avaliable")
 
 
 if __name__ == "__main__":
